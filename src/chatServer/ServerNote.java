@@ -10,30 +10,30 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class ServerNote extends JFrame implements ActionListener { // 0000, 0011
-   // ÀÚµ¿ import ´ÜÃàÅ° ctrl+shift+o ÀÚµ¿ Ã¤¿ì±â ctrl+space
+   // ìë™ import ë‹¨ì¶•í‚¤ ctrl+shift+o ìë™ ì±„ìš°ê¸° ctrl+space
    private JPanel contentPane; // GUI Member 1011
    private JTextField port_tf;
 
    private JTextArea textArea = new JTextArea();
-   private JButton start_btn = new JButton("¼­¹ö ½ÇÇà"); // Refactor-->Rename
-   private JButton stop_btn = new JButton("¼­¹ö ÁßÁö");
+   private JButton start_btn = new JButton("ì„œë²„ ì‹¤í–‰"); // Refactor-->Rename
+   private JButton stop_btn = new JButton("ì„œë²„ ì¤‘ì§€");
 
-   // socket »ı¼º ¿¬°á ºÎºĞ //2000
+   // socket ìƒì„± ì—°ê²° ë¶€ë¶„ //2000
    private ServerSocket server_socket;
    private Socket socket;
    int port = 12345;
 
-   // Stream º¯¼ö //3000
+   // Stream ë³€ìˆ˜ //3000
 
-   // Å¬¶óÀÌ¾ğÆ® °ü¸® //5000
+   // í´ë¼ì´ì–¸íŠ¸ ê´€ë¦¬ //5000
    private Vector<UserInfo> user_vc = new Vector<UserInfo>();
    private Vector<RoomInfo> room_vc = new Vector<RoomInfo>();   //7000
    StringTokenizer st;      // 6000
 
-   ServerNote() // »ı¼ºÀÚ //1000
+   ServerNote() // ìƒì„±ì //1000
    {
-      init(); // GUI ÃÊ±âÈ­, È­¸é »ı¼º //1000
-      start(); // ¸®½º³Ê ¼³Á¤ ¸Ş¼Òµå //1011
+      init(); // GUI ì´ˆê¸°í™”, í™”ë©´ ìƒì„± //1000
+      start(); // ë¦¬ìŠ¤ë„ˆ ì„¤ì • ë©”ì†Œë“œ //1011
       Server_start(); // 2000
 
    }
@@ -47,7 +47,7 @@ public class ServerNote extends JFrame implements ActionListener { // 0000, 0011
       setContentPane(contentPane);
       contentPane.setLayout(null);
 
-      JLabel lblNewLabel_2 = new JLabel("Æ÷Æ® ¹øÈ£");
+      JLabel lblNewLabel_2 = new JLabel("í¬íŠ¸ ë²ˆí˜¸");
       lblNewLabel_2.setBounds(12, 245, 57, 15);
       contentPane.add(lblNewLabel_2);
 
@@ -64,12 +64,12 @@ public class ServerNote extends JFrame implements ActionListener { // 0000, 0011
       contentPane.add(scrollPane);
 
       scrollPane.setViewportView(textArea);
-      textArea.setEditable(false); // 6666 È­¸é ¿¡µğÆ® ¼³Á¤
+      textArea.setEditable(false); // 6666 í™”ë©´ ì—ë””íŠ¸ ì„¤ì •
 
       stop_btn.setBounds(155, 286, 138, 23);
       contentPane.add(stop_btn);
 
-      this.setVisible(true); // È­¸é º¸ÀÌ±â
+      this.setVisible(true); // í™”ë©´ ë³´ì´ê¸°
    }
 
    private void start() // 1011
@@ -94,11 +94,11 @@ public class ServerNote extends JFrame implements ActionListener { // 0000, 0011
 
       Thread th = new Thread(new Runnable() { // 2300
          public void run() {
-            while (true) { // 4000 ¿©·¯¸í
+            while (true) { // 4000 ì—¬ëŸ¬ëª…
                try {
-                  textArea.append("»ç¿ëÀÚ Á¢¼Ó ´ë±âÁß\n");
+                  textArea.append("ì‚¬ìš©ì ì ‘ì† ëŒ€ê¸°ì¤‘\n");
                   socket = server_socket.accept();
-                  textArea.append("Å¬¾ÆÀÌ¾ğÆ® Á¢¼Ó ¿Ï·á\n");
+                  textArea.append("í´ì•„ì´ì–¸íŠ¸ ì ‘ì† ì™„ë£Œ\n");
                   UserInfo user = new UserInfo(socket);
                   user.start();
 
@@ -119,10 +119,10 @@ public class ServerNote extends JFrame implements ActionListener { // 0000, 0011
          System.out.println("Server Stop Button Click");
       }
 
-   } // ¾×¼Ç ÀÌº¥Æ® ³¡
+   } // ì•¡ì…˜ ì´ë²¤íŠ¸ ë
 
    class UserInfo extends Thread { // 4000
-      // Stream º¯¼ö
+      // Stream ë³€ìˆ˜
       private InputStream is;
       private DataInputStream dis;
       private OutputStream os;
@@ -143,26 +143,26 @@ public class ServerNote extends JFrame implements ActionListener { // 0000, 0011
             dos = new DataOutputStream(os);
 
             userID = dis.readUTF();
-            textArea.append(userID + " Å¬¶óÀÌ¾ğÆ® Á¢¼Ó\n");
+            textArea.append(userID + " í´ë¼ì´ì–¸íŠ¸ ì ‘ì†\n");
             
-            // ¿¬°áµÇ¾î ÀÖ´Â Å¬¶óÀÌ¾ğÆ®µé¿¡°Ô °¡ÀÔÀÚ Á¤º¸ Àü´Ş
-            System.out.println("ÇöÀç Á¢¼ÓÇÑ Å¬¶óÀÌ¾ğÆ® ¼ö = "+ user_vc.size());
+            // ì—°ê²°ë˜ì–´ ìˆëŠ” í´ë¼ì´ì–¸íŠ¸ë“¤ì—ê²Œ ê°€ì…ì ì •ë³´ ì „ë‹¬
+            System.out.println("í˜„ì¬ ì ‘ì†í•œ í´ë¼ì´ì–¸íŠ¸ ìˆ˜ = "+ user_vc.size());
             for (int i = 0; i < user_vc.size(); i++) {         //5100
                UserInfo u = (UserInfo) user_vc.elementAt(i);
                u.send_Msg("NewUser/"+ userID);
                System.out.println("SEND NewUser");
             }
             
-            //»õ·Î Á¢¼ÓÇÑ Å¬¶óÀÌ¾ğÆ®¿¡°Ô                        //5100
+            //ìƒˆë¡œ ì ‘ì†í•œ í´ë¼ì´ì–¸íŠ¸ì—ê²Œ                        //5100
             for(int i=0; i<user_vc.size();i++) {
                UserInfo u = (UserInfo) user_vc.elementAt(i);
                send_Msg("OldUser/"+u.userID);
             }
             
-            //»õ·Î Á¢¼ÓÇÑ Å¬¶óÀÌ¾ğÆ® µî·Ï                        //5100
+            //ìƒˆë¡œ ì ‘ì†í•œ í´ë¼ì´ì–¸íŠ¸ ë“±ë¡                        //5100
             user_vc.add(this);
             
-            // ÀÚ½Å¿¡°Ô ±âÁ¸ÀÇ °³¼³µÈ Ã¤ÆÃ ¹æ Á¤º¸ Àü¼Û               //7200
+            // ìì‹ ì—ê²Œ ê¸°ì¡´ì˜ ê°œì„¤ëœ ì±„íŒ… ë°© ì •ë³´ ì „ì†¡               //7200
             for (int i = 0; i < room_vc.size(); i++) 
             {
                RoomInfo r = (RoomInfo) room_vc.elementAt(i);
@@ -180,17 +180,17 @@ public class ServerNote extends JFrame implements ActionListener { // 0000, 0011
             try {
                String msg = dis.readUTF();
                System.out.println("read msg = "+ msg);
-               textArea.append(userID + "·ÎºÎÅÍ ¼ö½ÅÇÑ ¸Ş½ÃÁö: " + msg + "\n");
+               textArea.append(userID + "ë¡œë¶€í„° ìˆ˜ì‹ í•œ ë©”ì‹œì§€: " + msg + "\n");
                recv_Msg(msg);                           // 6000
 
             } catch (IOException e) {                     // 7600
-               // Å¬¶óÀÌ¾ğÆ®¿Í Á¢¼ÓÀÌ ²÷¾îÁö¸é
-               textArea.append(userID + " »ç¿ëÀÚ Á¢¼Ó ²÷¾îÁü\n");
+               // í´ë¼ì´ì–¸íŠ¸ì™€ ì ‘ì†ì´ ëŠì–´ì§€ë©´
+               textArea.append(userID + " ì‚¬ìš©ì ì ‘ì† ëŠì–´ì§\n");
                try {
                   dos.close();
                   dis.close();
                   clientSocket.close();
-                  user_vc.remove(this);      //µî·Ï ÇØÁ¦
+                  user_vc.remove(this);      //ë“±ë¡ í•´ì œ
                   broadCast("User_out/" + userID);
                } catch (IOException e1) {
                }
@@ -206,54 +206,54 @@ public class ServerNote extends JFrame implements ActionListener { // 0000, 0011
          st = new StringTokenizer(str, "/");
          String protocol = st.nextToken();
          String Message = st.nextToken();
-         System.out.println("ÇÁ·ÎÅäÄİ : " + protocol);
-         System.out.println("³»¿ë : " + Message);
+         System.out.println("í”„ë¡œí† ì½œ : " + protocol);
+         System.out.println("ë‚´ìš© : " + Message);
          if(protocol.equals("Note")) {   
             // protocol = Note
             // message = user/~~~~~~
             String note = st.nextToken();
 
-            System.out.println("¹Ş´Â »ç¶÷ : " + Message); // Message = ¹Ş´Â Å¬¶óÀÌ¾ğÆ®ÀÇ userID
-            System.out.println("º¸³¾ ÂÊÁö : " + note);
+            System.out.println("ë°›ëŠ” ì‚¬ëŒ : " + Message); // Message = ë°›ëŠ” í´ë¼ì´ì–¸íŠ¸ì˜ userID
+            System.out.println("ë³´ë‚¼ ìª½ì§€ : " + note);
 
-            // ¹éÅÍ¿¡¼­ ÇØ´ç »ç¿ëÀÚ¸¦ Ã£¾Æ¼­ ¸Ş¼¼Áö Àü¼Û
+            // ë°±í„°ì—ì„œ í•´ë‹¹ ì‚¬ìš©ìë¥¼ ì°¾ì•„ì„œ ë©”ì„¸ì§€ ì „ì†¡
             for (int i = 0; i < user_vc.size(); i++) {
                UserInfo u = (UserInfo) user_vc.elementAt(i);
                if (u.userID.equals(Message)) {
-                  u.send_Msg("NoteS/" + userID + "/" + note);    // userID°¡ Àü¼ÛÇÑ´Ù´Â ³»¿ë
+                  u.send_Msg("NoteS/" + userID + "/" + note);    // userIDê°€ ì „ì†¡í•œë‹¤ëŠ” ë‚´ìš©
                }
             }
 
-         } // Note if ¹®
+         } // Note if ë¬¸
          else if (protocol.equals("CreateRoom")) // 7000
          {
-               RoomInfo r = new RoomInfo(Message, this);   //Message == RoomName, »ı¼º½Ã¿¡ room¿¡ °¡ÀÔ
-               room_vc.add(r); // ¹æÀ» Ãß°¡
-               send_Msg("CreateRoom/" + Message); //CreateRoomÀ» Àü¼ÛÇÑ Å¬¶óÀÌ¾ğÆ®¿¡°Ô Àü¼Û
-               broadCast("New_Room/" + Message); // ¸ğµç Å¬¶óÀÌ¾ğÆ®¿¡°Ô »õ·Î¿î ¹æ »ı¼ºÇß´Ù°í Åëº¸
+               RoomInfo r = new RoomInfo(Message, this);   //Message == RoomName, ìƒì„±ì‹œì— roomì— ê°€ì…
+               room_vc.add(r); // ë°©ì„ ì¶”ê°€
+               send_Msg("CreateRoom/" + Message); //CreateRoomì„ ì „ì†¡í•œ í´ë¼ì´ì–¸íŠ¸ì—ê²Œ ì „ì†¡
+               broadCast("New_Room/" + Message); // ëª¨ë“  í´ë¼ì´ì–¸íŠ¸ì—ê²Œ ìƒˆë¡œìš´ ë°© ìƒì„±í–ˆë‹¤ê³  í†µë³´
          } // CreateRoom
          else if (protocol.equals("Join_Room")) // 7300
          {
             for (int i = 0; i < room_vc.size(); i++) {
                RoomInfo r = (RoomInfo) room_vc.elementAt(i);
-               if (r.Room_name.equals(Message)) // ÇØ´ç ¹æÀ» Ã£À¸¸é
+               if (r.Room_name.equals(Message)) // í•´ë‹¹ ë°©ì„ ì°¾ìœ¼ë©´
                {
-                  //¹æ¿¡ °¡ÀÔÇÑ »ç¶÷µé¿¡°Ô ½Å°í½Ä...
-                  r.BroadCast_Room("Join_Room_B/°¡ÀÔ/***" + userID + "´ÔÀÌ ÀÔÀåÇÏ¼Ì½À´Ï´Ù.********");
-                  r.Room_user_vc.add(this); // Ã¤ÆÃ¹æ °¡ÀÔ, »ç¿ëÀÚ Ãß°¡
-                  send_Msg("Join_Room/" + Message); // Message(=¹æÀÌ¸§) Ãß°¡  ³Ê °¡ÀÔ ¼º°øÇß¾î...
+                  //ë°©ì— ê°€ì…í•œ ì‚¬ëŒë“¤ì—ê²Œ ì‹ ê³ ì‹...
+                  r.BroadCast_Room("Join_Room_B/ê°€ì…/***" + userID + "ë‹˜ì´ ì…ì¥í•˜ì…¨ìŠµë‹ˆë‹¤.********");
+                  r.Room_user_vc.add(this); // ì±„íŒ…ë°© ê°€ì…, ì‚¬ìš©ì ì¶”ê°€
+                  send_Msg("Join_Room/" + Message); // Message(=ë°©ì´ë¦„) ì¶”ê°€  ë„ˆ ê°€ì… ì„±ê³µí–ˆì–´...
                   break;
                }
             }
          }
          else if (protocol.equals("Chatting")) // 8000
          {
-            // chatting / Ã¤ÆÃ¹æÀÌ¸§ / ¸Ş½ÃÁö Àü¼Û
+            // chatting / ì±„íŒ…ë°©ì´ë¦„ / ë©”ì‹œì§€ ì „ì†¡
             String chatting_msg = st.nextToken();
 
             for (int i = 0; i < room_vc.size(); i++) {
                RoomInfo r = (RoomInfo) room_vc.elementAt(i);
-               if (r.Room_name.equals(Message)) // ÇØ´ç ¹æÀ» Ã£À¸¸é
+               if (r.Room_name.equals(Message)) // í•´ë‹¹ ë°©ì„ ì°¾ìœ¼ë©´
                {
                   r.BroadCast_Room("Chatting/" + userID + "/" + chatting_msg);
                }
@@ -261,7 +261,7 @@ public class ServerNote extends JFrame implements ActionListener { // 0000, 0011
          } 
       }
       
-      private void broadCast(String str) // ±âÁ¸ »ç¿ëÀÚµé¿¡°Ô »õ·Î¿î »ç¿ëÀÚ ¾Ë¸²
+      private void broadCast(String str) // ê¸°ì¡´ ì‚¬ìš©ìë“¤ì—ê²Œ ìƒˆë¡œìš´ ì‚¬ìš©ì ì•Œë¦¼
       {
 
          for (int i = 0; i < user_vc.size(); i++) {
@@ -282,7 +282,7 @@ public class ServerNote extends JFrame implements ActionListener { // 0000, 0011
       private String Room_name="";
       private Vector<UserInfo> Room_user_vc = new Vector<UserInfo>();
 
-      RoomInfo(String name, UserInfo u) {   //»ı¼º½Ã¿¡ room¿¡ °¡ÀÔ
+      RoomInfo(String name, UserInfo u) {   //ìƒì„±ì‹œì— roomì— ê°€ì…
          this.Room_name = name;
          this.Room_user_vc.add(u);
       }
